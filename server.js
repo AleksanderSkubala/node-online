@@ -3,26 +3,37 @@ const next = require('next')
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
-const app = next({ dev })
-const handle = app.getRequestHandler()
+const nextApp = next({ dev })
+const nextHandler = nextApp.getRequestHandler()
 
-app.prepare().then(() => {
-  const server = express()
+nextApp.prepare().then(() => {
+  const app = express()
 
-  server.get('/a', (req, res) => {
-    return app.render(req, res, '/a', req.query)
+  const server = require('http').Server(app)
+  const io = require('socket.io')(server)
+
+  io.on('connect', socket => {
+    socket.emit('now', {
+      message: 'lorem'
+    })
   })
 
-  server.get('/b', (req, res) => {
-    return app.render(req, res, '/b', req.query)
+  app.get('/a', (req, res) => {
+    return nextApp.render(req, res, '/a', req.query)
   })
 
-  server.all('*', (req, res) => {
-    return handle(req, res)
+  app.get('/b', (req, res) => {
+    return nextApp.render(req, res, '/b', req.query)
+  })
+
+  app.all('*', (req, res) => {
+    return nextHandler(req, res)
   })
 
   server.listen(port, (err) => {
     if (err) throw err
     console.log(`> Ready on http://localhost:${port}`)
   })
+
 })
+
