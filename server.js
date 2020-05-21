@@ -16,6 +16,13 @@ nextApp.prepare().then(() => {
     socket.emit('now', {
       message: 'lorem'
     })
+
+    socket.on('code', code => {
+      console.log(code)
+      socket.emit('now', {
+        message: 'workin'
+      })
+    })
   })
 
   app.get('/a', (req, res) => {

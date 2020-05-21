@@ -1,17 +1,26 @@
 import React, { Component } from 'react'
 import io from 'socket.io-client'
+import debounce from 'lodash.debounce'
 
 export default class A extends Component {
   constructor(props) {
     super(props)
 
+    this.socket = io()
     this.state = {
-      message: ''
+      message: '',
+      code: ''
     }
+
+    this.handleEditorChange = debounce((value) => {
+      console.log(value)
+      this.socket.emit('code', value);
+    }, 3000)
+
+    this.onEditorChange = this.onEditorChange.bind(this)
   }
 
   componentDidMount() {
-    this.socket = io()
     this.socket.on('now', data => {
       this.setState({
         message: data.message
@@ -20,7 +29,8 @@ export default class A extends Component {
   }
 
   onEditorChange(event) {
-    console.log(event.target.value);
+    this.setState({ code: event.target.value })
+    this.handleEditorChange(event.target.value)
   }
 
   render() {
