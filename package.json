@@ -7,9 +7,11 @@
     "start": "cross-env NODE_ENV=production node server.js"
   },
   "dependencies": {
+    "@monaco-editor/react": "^3.3.0",
     "cross-env": "^7.0.2",
     "express": "^4.17.1",
     "lodash.debounce": "^4.0.8",
+    "monaco-editor": "^0.20.0",
     "next": "latest",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

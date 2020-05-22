@@ -1,1 +1,1 @@
-console.log('dupa
+console.log('Hello world')

@@ -37,14 +37,6 @@ nextApp.prepare().then(() => {
     })
   })
 
-  app.get('/a', (req, res) => {
-    return nextApp.render(req, res, '/a', req.query)
-  })
-
-  app.get('/b', (req, res) => {
-    return nextApp.render(req, res, '/b', req.query)
-  })
-
   app.all('*', (req, res) => {
     return nextHandler(req, res)
   })
