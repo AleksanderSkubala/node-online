@@ -13,7 +13,6 @@ export default class A extends Component {
     }
 
     this.handleEditorChange = debounce((value) => {
-      console.log(value)
       this.socket.emit('code', value);
     }, 3000)
 
@@ -21,7 +20,7 @@ export default class A extends Component {
   }
 
   componentDidMount() {
-    this.socket.on('now', data => {
+    this.socket.on('return', data => {
       this.setState({
         message: data.message
       })

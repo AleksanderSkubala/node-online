@@ -1,5 +1,7 @@
 const express = require('express')
 const next = require('next')
+const fs = require('fs')
+const { exec } = require('child_process');
 
 const port = parseInt(process.env.PORT, 10) || 3000
 const dev = process.env.NODE_ENV !== 'production'
@@ -13,14 +15,24 @@ nextApp.prepare().then(() => {
   const io = require('socket.io')(server)
 
   io.on('connect', socket => {
-    socket.emit('now', {
+    socket.emit('return', {
       message: 'lorem'
     })
 
     socket.on('code', code => {
-      console.log(code)
-      socket.emit('now', {
-        message: 'workin'
+      fs.writeFile('./tmp/code.js', code, (err) => {
+        if(err) {
+          return console.error(err)
+        }
+
+        exec('node ./tmp/code.js', (excecErr, stdout, stderr) => {
+          const codeOutput = stdout ? stdout : stderr
+
+          socket.emit('return', {
+            message: codeOutput
+          })
+        })
+
       })
     })
   })
