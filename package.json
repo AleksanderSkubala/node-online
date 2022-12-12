@@ -9,7 +9,7 @@
   "dependencies": {
     "@monaco-editor/react": "^3.3.0",
     "cross-env": "^7.0.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "lodash.debounce": "^4.0.8",
     "monaco-editor": "^0.20.0",
     "next": "latest",
